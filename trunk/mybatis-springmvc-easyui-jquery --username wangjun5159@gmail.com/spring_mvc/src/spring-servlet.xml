@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="   
+           http://www.springframework.org/schema/beans   
+           http://www.springframework.org/schema/beans/spring-beans-3.0.xsd   
+           http://www.springframework.org/schema/context   
+           http://www.springframework.org/schema/context/spring-context-3.0.xsd  
+           http://www.springframework.org/schema/mvc   
+           http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd">
+           
+	<!-- spring mvc的配置 -->
+
+	<!-- 启用spring注解 -->
+	<!-- 这个配置是使自动连线的注解生效，如@autowired，@inject，@resource -->
+	<!-- 从而，减少了xml中property、constructor-arg的使用 -->
+	<context:annotation-config />
+
+	<!-- 这个注解是不用再在xml中定义bean了，很显然它会使@controller @service @repository @service生效 -->
+	<!-- 要想使用spring mvc必须在这个文件定义requestmapping的controller -->
+	<context:component-scan base-package="controller"></context:component-scan>
+	
+	<!--初始化7个messageconverter，其中有一个messageconverter是json转化器 就是将对象转成json -->
+	<!-- AnnotationMethodHandlerAdapter 有7个转化器 只有开启转化器才能将对象转化为json-->
+	<!-- validation support, message conversion, and support for field formatting. -->
+	<mvc:annotation-driven />
+
+	<!-- 创建handlermapping 处理静态资源 -->
+	<!-- /resources/** 就是resources文件下及子路径都匹配 -->
+	<mvc:resources location="/resources/" mapping="/resources/**"/>
+	
+	<mvc:default-servlet-handler/>
+	
+	
+</beans>

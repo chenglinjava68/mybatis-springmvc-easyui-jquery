@@ -1,0 +1,82 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<link rel="stylesheet" type="text/css" href="../../easyui/themes/default/easyui.css">
+	<link rel="stylesheet" type="text/css" href="../../easyui/themes/icon.css">
+	<script type="text/javascript" src="../../easyui/jquery-1.8.0.min.js"></script>
+	<script type="text/javascript" src="../../easyui/jquery.easyui.min.js"></script>
+<title>blog page</title>
+</head>
+<body>
+	<form>
+		<table>
+			<tr>
+				<td>
+					blog用户名
+				</td>
+				<td>
+					<input type="text" name="blogname" id="blogname">
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2">
+					<input type="button" value="save data" onclick="clickeme()">
+					<input type="button" value="find data" onclick="findAll()">
+				</td>
+			</tr>
+		</table>
+		
+		<table id="dg"></table>
+		
+		
+		</div>
+	</form>
+	
+	<script type="text/javascript">
+		function clickeme(){
+			var blogname = document.getElementById("blogname").value;
+			$.post(
+					"add.do",
+					{
+						blogname:blogname
+						
+					},
+					
+					 function(data,status){
+						$('#dg').datagrid({
+						    data:data,
+						    columns:[[
+						        {field:'id',title:'xx',width:100},
+						        {field:'name',title:'Name',width:100}
+						    ]]
+						});
+					  }
+					
+			);
+		}
+		
+		function findAll(){
+			
+			$.get(
+				"findAll.do",
+				function(data,status){
+					/*
+					注意此处对象分开输出可以在浏览器控制台看到对象信息
+					如果，把字符串与对象合在一起输出就只能看到全是object
+					*/
+					console.log(data);
+					$('#dg').datagrid({
+					    data:data,
+					    columns:[[
+					        {field:'id',title:'xx',width:100},
+					        {field:'name',title:'Name',width:100}
+					    ]]
+					});
+				}
+			);
+		}
+			
+	</script>
+</body>
+</html>

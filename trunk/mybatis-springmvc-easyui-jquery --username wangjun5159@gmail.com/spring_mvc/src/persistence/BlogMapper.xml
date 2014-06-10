@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="persistence.BlogMapper">
+
+	<resultMap type="domain.Blog" id="baseresultmap">
+		<id column="id" javaType="java.lang.Long" jdbcType="BIGINT" property="id"/>
+		<result column="name" javaType="java.lang.String" jdbcType="VARCHAR" property="name"/>
+	</resultMap>
+
+  <select id="selectBlog" resultMap="baseresultmap">
+    select * from Blog where id = #{id}
+  </select>
+  
+  <insert id="saveBlog" parameterType="java.lang.String">
+  	insert into blog (name) values(#{name,jdbcType=VARCHAR})
+  </insert>
+  
+  
+  <select id="findAllBlog" resultMap="baseresultmap">
+  	select * from blog
+  </select>
+</mapper>

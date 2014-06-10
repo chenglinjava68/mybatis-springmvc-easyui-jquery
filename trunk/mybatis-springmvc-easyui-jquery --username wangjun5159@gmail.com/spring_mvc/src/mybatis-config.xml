@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<!-- 各项元素的定义对顺序是敏感的，也就是说比如首先需要定义typeAliases、才能定义environments
+	具体顺序以dtd文件规定的为准
+	 -->
+	 
+	<properties resource="jdbc.properties">
+	  <property name="username" value="db_username"/>
+	  <property name="password" value="db_password"/>
+	   <property name="driver" value="db_driver"/>
+	  <property name="url" value="db_url"/>
+	</properties>
+	
+	
+  <typeAliases>
+  	<typeAlias type="domain.Blog" alias="Blog"/>
+  </typeAliases>
+  
+ 
+
+  <environments default="development">
+    <environment id="development">
+      <transactionManager type="JDBC"/>
+      <dataSource type="POOLED">
+        <property name="driver" value="${driver}"/>
+        <property name="url" value="${url}"/>
+        <property name="username" value="${username}"/>
+        <property name="password" value="${password}"/>
+      </dataSource>
+    </environment>
+  </environments>
+  
+  <mappers>
+    <mapper resource="persistence/BlogMapper.xml"/>
+  </mappers>
+  
+</configuration>
