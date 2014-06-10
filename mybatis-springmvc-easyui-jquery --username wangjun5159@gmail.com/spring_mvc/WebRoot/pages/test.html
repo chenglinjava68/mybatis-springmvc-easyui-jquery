@@ -1,0 +1,81 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>测试spring mvc</title>
+</head>
+<body>
+
+	<form  >
+		<table>
+			<tr>
+				<td>
+					用户名
+				</td>
+				<td>
+					<input type="text" name="username" id="username">
+				</td>
+			</tr>
+			<tr>
+				<td>
+					邮箱
+				</td>
+				<td>
+					<input type="text" name="email" id="email">
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2">
+				
+					<input type="button" value="click me" onclick="clickeme()">
+					
+				</td>
+			</tr>
+		</table>
+		
+	</form>
+	
+	<script type="text/javascript">
+		function clickeme(){
+			var xmlhttp;
+			if (window.XMLHttpRequest)
+			  {// code for IE7+, Firefox, Chrome, Opera, Safari
+			  xmlhttp=new XMLHttpRequest();
+			  }
+			else
+			  {// code for IE6, IE5
+			  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+			  }
+			
+			xmlhttp.onreadystatechange=function()
+			  {
+			  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+			    {
+				 var obj =  eval('('+xmlhttp.responseText+')');
+				 
+			     alert(obj.name);
+			    }
+			  }
+			
+			xmlhttp.open("POST","test/login.do",true);
+			xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+			var username = document.getElementById("username").value;
+			var email = document.getElementById("email").value;
+			xmlhttp.send("username="+username+"&email="+email);
+		}
+		
+		/*
+		$('#dg').datagrid({
+		    url:'findAll.do',
+		    columns:[[
+		              
+		        {field:'code',title:'Code',width:100},
+		        {field:'name',title:'Name',width:100},
+		        {field:'price',title:'Price',width:100,align:'right'}
+		        
+		    ]]
+		});
+		*/
+	</script>
+</body>
+</html>

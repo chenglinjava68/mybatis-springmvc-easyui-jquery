@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:aop="http://www.springframework.org/schema/aop"
+		xmlns:tx="http://www.springframework.org/schema/tx"
+		xmlns:context="http://www.springframework.org/schema/context"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
+			http://www.springframework.org/schema/context   
+           http://www.springframework.org/schema/context/spring-context-3.0.xsd  
+			http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd">
+
+	<!-- 这个注解是不用再在xml中定义bean了，很显然它会使@controller @service @repository @service生效 -->
+	<context:component-scan base-package="service"></context:component-scan>
+	
+	
+	<bean id="propertyConfigurer"  
+	        class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">  
+	    <property name="location">  
+	        <value>classpath:jdbc.properties</value>  
+	    </property>  
+	</bean>
+
+
+	<bean id="dataSource"
+	class="org.apache.commons.dbcp.BasicDataSource">
+		<property name="driverClassName" value="${db_driver}"/>
+		<property name="url" value="${db_url}"/>
+		<property name="username" value="${db_username}"/>
+		<property name="password" value="${db_password}"/>
+		<property name="initialSize" value="5"/>
+		<property name="maxActive" value="10"/>
+	</bean>
+
+	<!-- 创建sqlsessionfactoryBean并不直接产生sqlSessionFactory，而是通过它的getObject方法返回sqlSessionFactory -->
+	<!-- sqlSessionFactoryBean的作用就如同sqlSessionFactoryBuilder -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+  		<property name="dataSource" ref="dataSource" />
+  			<!-- 在mapper.xml中，可以直接直接写resultType =xx,否则必须写全名 -->
+		<property name="typeAliasesPackage" value="domain" />
+	</bean>
+	
+	<!-- 创建事务管理器  自动创建sqlsession提交-->
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+  		<property name="dataSource" ref="dataSource" />
+	</bean>
+
+
+	<!-- Activates @Transactional for DefaultImageDatabase 使用注解方式来使用声明事物 -->
+	<tx:annotation-driven transaction-manager="transactionManager" />
+	
+	<!-- mapper是接口，但是不需要写实现，是因为mapperfactorybean创建动态代理实现mapper -->
+	<!-- MapperScannerConfigurer会自动寻找mapper并创建mapperFactoryBean -->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+  		<property name="basePackage" value="persistence" />
+	</bean>
+
+
+	
+</beans>
